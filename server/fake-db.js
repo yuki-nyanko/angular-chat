@@ -14,6 +14,11 @@ class FakeDb {
         message: "test2",
         date: "2021/07/21",
       },
+      {
+        uid: 1,
+        message: "test3",
+        date: "2021/07/21",
+      },
     ];
     this.users = [
       {
@@ -29,13 +34,13 @@ class FakeDb {
     ];
   }
 
-  async initDb(){
-    await this.cleanDb()
+  async initDb() {
+    // await this.cleanDb();
     this.pushMessageToDb();
     this.pushUsersToDb();
   }
 
-  async cleanDb(){
+  async cleanDb() {
     await Message.deleteMany({});
     await User.deleteMany({});
   }
@@ -43,7 +48,7 @@ class FakeDb {
   pushMessageToDb() {
     // messages（複数の塊） ⇒ message（1つ取り出すから単数形に。わかりやすく名前を一致させてる）
     this.messages.forEach((message) => {
-    const newMessage = new Message(message);
+      const newMessage = new Message(message);
       newMessage.save();
     });
     // for (let i = 0; i < length(this.messages); i++) {

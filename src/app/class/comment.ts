@@ -4,7 +4,7 @@ export class Comment {
 
   date: number;
 
-  constructor(public user: User, public message: string) {
+  constructor(public user: User, public message: string, public id?: string) {
     this.date = Date.now();
   }
 
