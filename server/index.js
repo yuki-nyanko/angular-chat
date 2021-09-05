@@ -12,14 +12,21 @@ app.use(express.json());
 
 const mongo = require("mongodb");
 
+const httpServer = require("http").createServer(app);
+
 const PORT = process.env.PORT || 3001;
 
-app.use("/api/comment", commentRoutes);
+app.use("/api/v1/chats", commentRoutes);
 
 app.get("/api/port", function (req, res) {
   console.log("success!!!");
   res.json({ port: PORT });
 });
+
+httpServer.listen(PORT, () =>
+  console.log("Express server listening on port " + PORT)
+);
+// app.listen(PORT, () => console.log('Express server listening on port ' + PORT));
 
 if (process.env.NODE_ENV === "production") {
   const appPath = path.join(__dirname, "..", "dist", "angular-async-means");
@@ -29,16 +36,19 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-mongoose.connect(config.DB_URI,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  },
-  (err, client))
-.then(() => {
+mongoose
+  .connect(
+    config.DB_URI,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    },
+  )
+  .then(() => {
     // if (process.env.NODE_ENV !== "production") {
     // }
     const fakeDb = new FakeDb();
     fakeDb.initDb();
-  }
-);
+  });
+

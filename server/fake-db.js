@@ -6,36 +6,36 @@ class FakeDb {
     this.messages = [
       {
         uid: 1,
-        message: "test",
+        message: "テスト",
         date: "2021/07/21",
       },
       {
         uid: 2,
-        message: "test2",
+        message: "テスト2",
         date: "2021/07/21",
       },
       {
         uid: 1,
-        message: "test3",
+        message: "テスト3",
         date: "2021/07/21",
       },
     ];
     this.users = [
       {
-        name: "leader 江幡",
-        initial: "ebara",
+        name: "江幡",
+        initial: "e",
         uid: 1,
       },
       {
-        name: "master 森井",
-        initial: "mori!!",
+        name: "森井",
+        initial: "m",
         uid: 2,
       },
     ];
   }
 
   async initDb() {
-    // await this.cleanDb();
+    await this.cleanDb();
     this.pushMessageToDb();
     this.pushUsersToDb();
   }

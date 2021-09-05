@@ -28,6 +28,7 @@ export class AppComponent {
   comment = '';
   uid = '';
 
+  constructor(private messageService: MessageService) { }
 
   addComment(comment: string): void {
     if (comment) {
@@ -35,10 +36,12 @@ export class AppComponent {
       // 第3引数はMongoDBで自動生成される_idの為、空とする
       // this.comments.push();
       // 変数に格納せずに直接addMessagesに送れる
-      this.messageService.addMessages(new Comment(this.currentUser, comment, ''));
+      // this.messageService.addMessages(new Comment(this.currentUser, comment, ''));
+      // let body = new Comment(this.currentUser, comment, '')
+      this.messageService.addMessages(JSON.stringify({ "uid": this.currentUser.uid, "message": comment, "date": "2021/8/28" }));
+
     }
   }
-  constructor(private messageService: MessageService) { }
 
   ngOnInit() {
     const messageObservable = this.messageService.getMessages();

@@ -9,10 +9,15 @@ export class MessageService {
   constructor(private http: HttpClient) { }
 
   getMessages(): Observable<any> {
-    return this.http.get('/api/comment/get')
+    debugger
+    return this.http.get('/api/v1/chats/get')
   }
 
-  addMessages(addComment: Comment): Observable<any> {
-    return this.http.post('/api/comment/regist', addComment)
+  // addMessages(addComment): Observable<any> {
+  //   debugger
+  //   return this.http.post('/api/comment/regist', addComment)
+  // }
+  addMessages(chat: any): Observable<any> {
+    return this.http.get('/api/v1/chats/add', chat);
   }
 }
