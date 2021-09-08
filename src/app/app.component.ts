@@ -7,13 +7,6 @@ import { Observable } from 'rxjs';
 const CURRENT_USER: User = new User(1, '江幡');
 const ANOTHER_USER: User = new User(2, '森井');
 
-// const COMMENTS: Comment[] = [
-//   new Comment(ANOTHER_USER, 'お疲れさまです！'),
-//   new Comment(ANOTHER_USER, 'この間の件ですが、どうなりましたか？'),
-//   new Comment(CURRENT_USER, 'お疲れさまです！'),
-//   new Comment(CURRENT_USER, 'クライアントからOKが出ました！')
-// ];
-
 @Component({
   selector: 'ac-root',
   templateUrl: './app.component.html',
@@ -32,14 +25,17 @@ export class AppComponent {
 
   addComment(comment: string): void {
     if (comment) {
-      console.log(comment);
-      // 第3引数はMongoDBで自動生成される_idの為、空とする
-      // this.comments.push();
-      // 変数に格納せずに直接addMessagesに送れる
-      // this.messageService.addMessages(new Comment(this.currentUser, comment, ''));
-      // let body = new Comment(this.currentUser, comment, '')
-      this.messageService.addMessages(JSON.stringify({ "uid": this.currentUser.uid, "message": comment, "date": "2021/8/28" }));
-
+      console.log("入力文字：" + comment);
+      // 第3引数はMongoDBで自動生成される_idの為、無し
+      const chat = new Comment(new User(this.currentUser.uid, ''), comment);
+      this.messageService.addMessages(chat).subscribe(
+        (err) => {
+          console.error('次のエラーが発生しました: ' + err);
+        },
+        () => {
+          console.log('送信完了');
+        },
+      );
     }
   }
 
@@ -59,7 +55,7 @@ export class AppComponent {
         console.error('次のエラーが発生しました: ' + err);
       },
       () => {
-        console.log('完了');
+        console.log('取得完了');
       },
     );
   }

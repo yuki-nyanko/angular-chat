@@ -20,78 +20,39 @@ router.get("/get", function (req, res) {
             as: "user",
           },
         },
-      ]).toArray().then((chat) => {
+      ])
+      .toArray()
+      .then((chat) => {
         console.log(chat);
         res.json(chat);
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
         // APIがたたかれたときに422のエラーコードを返す。json型errorsを送る
         return res.status(422).send({
           errors: [{ title: "User error", detail: "Something went wrong!" }],
         });
-      }).then(() => {
+      })
+      .then(() => {
         client.close();
       });
   });
 });
 
-// router.get("/:messageId", function (req, res) {
-//   const messageId = req.params.messageId;
-//   Message.findById(messageId, function (err, foundMessage) {
-//     if (err) {
-//       return res.status(422).send({
-//         errors: [{ tittle: "Message error", detail: "Message not found" }],
-//       });
-//     }
-//     return res.json(foundMessage);
-//   });
-// });
-
-// ebata.yuya＜「/regist」とできるのはindex.jsで「/api/comment」を指定している為！！(# ﾟДﾟ)
-// router.post("/regist", function (req, res) {
-//   const uid = req.body.uid;
-//   const message = req.body.message;
-//   const date = req.body.date;
-
-//   // const fakeDb = new FakeDb();
-//   // fakeDb.initDb();
-
-//   if (!uid) {
-//     return res.status(422).send({
-//       errors: [{ title: "uid error", detail: "uid not found" }],
-//     });
-//   }
-//   if (!message) {
-//     return res.status(422).send({
-//       errors: [{ title: "comment error", detail: "comment not found" }],
-//     });
-//   }
-//   if (!date) {
-//     return res.status(422).send({
-//       errors: [{ title: "date error", detail: "date not found" }],
-//     });
-//   }
-
-//   const addMessage = new Message({
-//     uid: uid,
-//     message: message,
-//     date: date,
-//   });
-
-//   addMessage.save();
-//   return res.json({ registerd: true });
-// });
-
-// ebata.yuya＜「/add」とできるのはindex.jsで「/api/comment」を指定している為！！(# ﾟДﾟ)
+// yuya＜「/add」とできるのはindex.jsで「/api/comment」を指定している為！！(# ﾟДﾟ)
 router.post("/add", function (req, res) {
-  const uid = req.body.uid;
+  const uid = req.body.user.uid;
   const message = req.body.message;
-  const date = req.body.date;
+  const dayNum = new Date();
+  const y = dayNum.getFullYear();
+  const m = ("00" + (dayNum.getMonth() + 1)).slice(-2);
+  const d = ("00" + dayNum.getDate()).slice(-2);
+  const day = y + "/" + m + "/" + d;
 
   const addMessage = new Message({
     uid: uid,
     message: message,
-    date: date,
+    date: day,
   });
 
   addMessage.save();

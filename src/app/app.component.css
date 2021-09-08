@@ -1,7 +1,7 @@
 .page {
   overflow: scroll;
   max-width: 960px;
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
   padding: 10px 0;
   background-color: #fff;
@@ -71,4 +71,21 @@ section {
 }
 .media-right .icon {
   background-color: #35b8c2;
+}
+
+.media-body h4.media-heading .fa {
+  cursor: pointer;
+}
+
+.media-body h4.media-heading .fa:hover {
+  color: #666;
+}
+
+.media-body div.edit-buttons {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.media-body div.edit-buttons .btn {
+  width: 100px;
 }
