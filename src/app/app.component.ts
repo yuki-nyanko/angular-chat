@@ -50,9 +50,6 @@ export class AppComponent {
       // 第3引数はMongoDBで自動生成される_idの為、無し
       const chat = new Comment(new User(this.currentUser.uid, ''), comment);
       this.messageService.addMessages(chat).subscribe(
-        (err) => {
-          console.error('次のエラーが発生しました: ' + err);
-        },
         () => {
           console.log('送信完了');
         },
@@ -66,9 +63,6 @@ export class AppComponent {
       // 第3引数はMongoDBで自動生成される_idの為、無し
       const chat = new Comment(new User(this.currentUser.uid, ''), comment);
       this.messageService.editMessages(chat).subscribe(
-        (err) => {
-          console.error('次のエラーが発生しました: ' + err);
-        },
         () => {
           console.log('編集完了');
         },
@@ -81,9 +75,6 @@ export class AppComponent {
     // 第3引数はMongoDBで自動生成される_idの為、無し
     const chat = new Comment(new User(this.currentUser.uid, ''), comment);
     this.messageService.deleteMessages(chat).subscribe(
-      (err) => {
-        console.error('次のエラーが発生しました: ' + err);
-      },
       () => {
         console.log('削除完了');
       },
