@@ -22,12 +22,12 @@ class FakeDb {
     ];
     this.users = [
       {
-        name: "江幡",
+        name: "山田",
         initial: "e",
         uid: 1,
       },
       {
-        name: "森井",
+        name: "田中",
         initial: "m",
         uid: 2,
       },

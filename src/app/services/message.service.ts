@@ -15,4 +15,12 @@ export class MessageService {
   addMessages(chat: any): Observable<any> {
     return this.http.post('/api/v1/chats/add', chat);
   }
+
+  editMessages(chat: any): Observable<any> {
+    return this.http.post('/api/v1/chats/edit', chat);
+  }
+
+  deleteMessages(chat: any): Observable<any> {
+    return this.http.post('/api/v1/chats/delete', chat);
+  }
 }

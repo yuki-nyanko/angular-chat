@@ -23,22 +23,6 @@ export class AppComponent {
 
   constructor(private messageService: MessageService) { }
 
-  addComment(comment: string): void {
-    if (comment) {
-      console.log("入力文字：" + comment);
-      // 第3引数はMongoDBで自動生成される_idの為、無し
-      const chat = new Comment(new User(this.currentUser.uid, ''), comment);
-      this.messageService.addMessages(chat).subscribe(
-        (err) => {
-          console.error('次のエラーが発生しました: ' + err);
-        },
-        () => {
-          console.log('送信完了');
-        },
-      );
-    }
-  }
-
   ngOnInit() {
     const messageObservable = this.messageService.getMessages();
     messageObservable.subscribe(
@@ -56,6 +40,52 @@ export class AppComponent {
       },
       () => {
         console.log('取得完了');
+      },
+    );
+  }
+
+  addComment(comment: string): void {
+    if (comment) {
+      console.log("入力文字：" + comment);
+      // 第3引数はMongoDBで自動生成される_idの為、無し
+      const chat = new Comment(new User(this.currentUser.uid, ''), comment);
+      this.messageService.addMessages(chat).subscribe(
+        (err) => {
+          console.error('次のエラーが発生しました: ' + err);
+        },
+        () => {
+          console.log('送信完了');
+        },
+      );
+    }
+  }
+
+  editComment(comment: string): void {
+    if (comment) {
+      console.log("編集後文字：" + comment);
+      // 第3引数はMongoDBで自動生成される_idの為、無し
+      const chat = new Comment(new User(this.currentUser.uid, ''), comment);
+      this.messageService.editMessages(chat).subscribe(
+        (err) => {
+          console.error('次のエラーが発生しました: ' + err);
+        },
+        () => {
+          console.log('編集完了');
+        },
+      );
+    }
+  }
+
+  deleteComment(comment: string): void {
+    console.log("削除中");
+    // 第3引数はMongoDBで自動生成される_idの為、無し
+    const chat = new Comment(new User(this.currentUser.uid, ''), comment);
+    this.messageService.deleteMessages(chat).subscribe(
+      (err) => {
+        console.error('次のエラーが発生しました: ' + err);
+      },
+      () => {
+        console.log('削除完了');
       },
     );
   }
