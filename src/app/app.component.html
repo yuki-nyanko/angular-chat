@@ -26,7 +26,7 @@
               <div class="edit-buttons">
                 <button (click)="comment.isEdit = !comment.isEdit;editComment(comment)"
                   class="btn btn-success btn-sm">保存</button>
-                <button class="btn btn-warning btn-sm">キャンセル</button>
+                <button (click)="comment.isEdit = !comment.isEdit" class="btn btn-warning btn-sm">キャンセル</button>
               </div>
             </ng-container>
           </div>
