@@ -17,7 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule
   ],
   providers: [
-    MessageService
+    MessageService,
   ],
   bootstrap: [AppComponent]
 })

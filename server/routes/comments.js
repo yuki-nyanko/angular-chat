@@ -9,42 +9,45 @@ const config = require("../config/dev");
 const ObjectId = require("mongodb").ob;
 const bson = require("mongodb/node_modules/bson");
 
-router.get("/get", function (req, res) {
-  MongoClient.connect(config.DB_URI, (err, client) => {
-    var db = client.db("myFirstDatabase");
-    db.collection("messages")
-      .aggregate([
-        {
-          $lookup: {
-            from: "users",
-            localField: "uid",
-            foreignField: "uid",
-            as: "user",
-          },
-        },
-      ])
-      .toArray()
-      .then((chat) => {
-        console.log(chat);
-        res.json(chat);
-      })
-      .catch((err) => {
-        console.log(err);
-        // APIがたたかれたときに422のエラーコードを返す。json型errorsを送る
-        return res.status(422).send({
-          errors: [{ title: "User error", detail: "Something went wrong!" }],
-        });
-      })
-      .then(() => {
-        client.close();
-      });
-  });
-});
+// メッセージ取得
+// router.get("/get", (req, res) => {
+// function getMessages() {
+// MongoClient.connect(config.DB_URI, (err, client) => {
+//   var db = client.db("myFirstDatabase");
+//   db.collection("messages")
+//     .aggregate([
+//       {
+//         $lookup: {
+//           from: "users",
+//           localField: "uid",
+//           foreignField: "uid",
+//           as: "user",
+//         },
+//       },
+//     ])
+//     .toArray()
+//     .then((chat) => {
+//       console.log(chat);
+//       return chat;
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       // APIがたたかれたときに422のエラーコードを返す。json型errorsを送る
+//       return res.status(422).send({
+//         errors: [{ title: "User error", detail: "Something went wrong!" }],
+//       });
+//     })
+//     .then(() => {
+//       client.close();
+//     });
+// });
+// }
 
 // yuya＜「/add」とできるのはindex.jsで「/api/comment」を指定している為！！(# ﾟДﾟ)
-router.post("/add", function (req, res) {
-  const uid = req.body.user.uid;
-  const message = req.body.message;
+// router.post("/add", function (req, res) {
+function addMessages(chat) {
+  const uid = chat._doc.uid;
+  const message = chat._doc.message;
   const dayNum = new Date();
   const y = dayNum.getFullYear();
   const m = ("00" + (dayNum.getMonth() + 1)).slice(-2);
@@ -58,28 +61,34 @@ router.post("/add", function (req, res) {
   });
 
   addMessage.save();
-  return res.json({ registerd: true });
-});
+  console.log("new message:", message);
+  // return res.json({ registerd: true });
+  return { added: true };
+}
 
-router.post("/edit", function (req, res) {
-  const beforeMessageId = { _id: new bson.ObjectId(req.body.message.id) };
-  const afterMessage = { $set: { message: req.body.message.message } };
+// router.post("/edit", function (req, res) {
+function editMessages(chatId, chat) {
+  const beforeMessageId = { _id: new bson.ObjectId(chatId) };
+  const afterMessage = { $set: { message: chat } };
 
   MongoClient.connect(config.DB_URI, (err, client) => {
     var db = client.db("myFirstDatabase");
     db.collection("messages").updateOne(beforeMessageId, afterMessage);
-    return res.json({ edited: true });
+    // return res.json({ edited: true });
+    return { edited: true };
   });
-});
+}
 
-router.post("/delete", function (req, res) {
-  const deleteMessageId = { _id: new bson.ObjectId(req.body.message.id) };
+// router.post("/delete", (req, res) => {
+function deleteMessages(chatId) {
+  const deleteMessageId = { _id: new bson.ObjectId(chatId) };
 
   MongoClient.connect(config.DB_URI, (err, client) => {
     var db = client.db("myFirstDatabase");
     db.collection("messages").deleteOne(deleteMessageId);
-    return res.json({ edited: true });
+    return { deleted: true };
   });
-});
+};
 
-module.exports = router;
+// module.exports = { router, getMessages };
+module.exports = { router, addMessages, editMessages, deleteMessages };
